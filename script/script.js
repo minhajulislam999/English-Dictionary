@@ -1,15 +1,15 @@
-const loadApi  = () =>{
+const loadApi = () => {
     fetch("https://openapi.programming-hero.com/api/levels/all") //promise of response
-    .then(response => response.json())
-    .then(data => displayData(data.data));
+        .then(response => response.json())
+        .then(data => displayData(data.data));
 }
 
-const loadLevelWord = (id) =>{
-    console.log(id);
-    const url = `https://openapi.programming-hero.com/api/level/${id}`;
+const loadLevelWord = (i) => {
+    // console.log(id);
+    const url = `https://openapi.programming-hero.com/api/level/${i}`;
     fetch(url)
-    .then(response => response.json())
-    .then(data => displayLevleWord(data.data));
+        .then(response => response.json())
+        .then(data => displayLevleWord(data.data));
 }
 
 // {
@@ -20,9 +20,20 @@ const loadLevelWord = (id) =>{
 //     "pronunciation": "ওয়াটার"
 // }
 
-const displayLevleWord = (words) =>{
+const displayLevleWord = (words) => {
     const wordContainer = document.getElementById("word-container");
     wordContainer.innerHTML = "";
+
+    if (words.length == 0) {
+        wordContainer.innerHTML = `<div class="text-center bg-sky-300 col-span-full rounded-xl py-10 space-y-6 bangla-font">
+          <img class="mx-auto" src="./assets/alert-error.png" alt="">
+
+    <p class="text-xl font-medium text-gray-400">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
+    <p class="font-bold  text-6xl " >নেক্সট Lesson এ যান</p>
+  </div>`;
+
+        return;
+    }
 
     words.forEach(word => {
         console.log(word);
@@ -45,49 +56,30 @@ const displayLevleWord = (words) =>{
         `;
 
         wordContainer.append(card);
-        
+
     });
 }
-const displayData = (lessons) =>{
-    console.log(lessons)
+const displayData = (lessons) => {
+    // console.log(lessons)
     //1 get the container & empty
-    
-    const lessonContainer =document.getElementById("lesson-section")
+
+    const lessonContainer = document.getElementById("lesson-section")
     lessonContainer.innerHTML = "";
 
     //2 get into every lesson
-
-    for(const lesson of lessons){
-        console.log(lesson)
-       
-       
+    for (const lesson of lessons) {
+        // console.log(lesson)       
         //3 create element
-
         const createDiv = document.createElement("div")
 
-        createDiv.innerHTML =`
+        createDiv.innerHTML = `
         <button onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary">
         <i class="fa-solid fa-book-open"></i>
         Lesson -${lesson.level_no}
-        </button>
-
-
-        
+        </button>       
         `
-
-
         //4 appent child
-
         lessonContainer.append(createDiv);
-
-
-
-
-
     }
-
-
-
 }
-
 loadApi()
