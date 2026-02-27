@@ -4,6 +4,50 @@ const loadApi  = () =>{
     .then(data => displayData(data.data));
 }
 
+const loadLevelWord = (id) =>{
+    console.log(id);
+    const url = `https://openapi.programming-hero.com/api/level/${id}`;
+    fetch(url)
+    .then(response => response.json())
+    .then(data => displayLevleWord(data.data));
+}
+
+// {
+//     "id": 90,
+//     "level": 1,
+//     "word": "Water",
+//     "meaning": "পানি",
+//     "pronunciation": "ওয়াটার"
+// }
+
+const displayLevleWord = (words) =>{
+    const wordContainer = document.getElementById("word-container");
+    wordContainer.innerHTML = "";
+
+    words.forEach(word => {
+        console.log(word);
+
+        const card = document.createElement("div");
+        card.innerHTML = `
+         <div class="bg-white rounded-xl shadow-sm text-center py-10 px-5 space-y-4">
+      <h2 class="font-bold text-xl">${word.word}</h2>
+      <p class="font-semibold">Meaning /Pronounciation</p>
+
+      <div class="text-2xl font-medium bangla-font">
+        "${word.meaning}/ ${word.pronunciation}"
+      </div>
+      <div class="flex justify-between items-center">
+        <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80]"><i class="fa-solid fa-circle-info"></i></button>
+        <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80]"><i class="fa-solid fa-volume-high"></i></button>
+      </div>
+    </div>
+        
+        `;
+
+        wordContainer.append(card);
+        
+    });
+}
 const displayData = (lessons) =>{
     console.log(lessons)
     //1 get the container & empty
@@ -22,7 +66,7 @@ const displayData = (lessons) =>{
         const createDiv = document.createElement("div")
 
         createDiv.innerHTML =`
-        <button class="btn btn-outline btn-primary">
+        <button onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary">
         <i class="fa-solid fa-book-open"></i>
         Lesson -${lesson.level_no}
         </button>
